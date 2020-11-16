@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from users.forms import CustomUserCreationForm
+from users.forms import CustomUserCreationForm, ProfileForm
 # Create your views here.
 
 def dashboard(request):
@@ -19,3 +19,11 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect(reverse("dashboard"))
+
+def profile(request):
+  if request.method == "GET":
+    form = ProfileForm(instance=request.user.profile)
+    return render(
+      request, "users/profile.html",
+      {"form": form}
+    )
